@@ -2,7 +2,9 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   labels:
-    operators.coreos.com/3scale-operator.openshift-operators: ''
+    operators.coreos.com/amq-streams.openshift-operators: ''
+  name: 3scale-operator 	
+  namespace: openshift-operators
 spec:
   channel: threescale-2.14
   installPlanApproval: Automatic
