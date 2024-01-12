@@ -2,7 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
   name: amq-streams-prod
-  namespace: amq-streams-test
+  namespace: amq-stream-test
 spec:
   entityOperator:
     topicOperator: {}
