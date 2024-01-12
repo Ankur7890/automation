@@ -3,11 +3,11 @@ kind: Subscription
 metadata:
   labels:
     operators.coreos.com/amq-streams.openshift-operators: ''
-  name: 3scale-operator 	
+  name: amq-streams
   namespace: openshift-operators
 spec:
-  channel: threescale-2.14
+  channel: stable
   installPlanApproval: Automatic
-  name: 3scale-operator
+  name: amq-streams
   source: redhat-operators
   sourceNamespace: openshift-marketplace
