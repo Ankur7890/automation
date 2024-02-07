@@ -2,6 +2,8 @@ apiVersion: capabilities.3scale.net/v1beta1
 kind: Product
 metadata:
   name: product1
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   name: "OperatedProduct 1"
   systemName: "operatedproduct1"
