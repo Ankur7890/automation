@@ -2,5 +2,7 @@ apiVersion: apps.3scale.net/v1alpha1
 kind: APIManager
 metadata:
   name: 3scale-apimanager
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   wildcardDomain: apps.cluster-hm55l.dynamic.redhatworkshops.io
