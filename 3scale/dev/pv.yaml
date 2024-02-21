@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: backend-redis-storage
   namespace: 3scale
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
   - ReadWriteOnce
@@ -18,6 +20,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-storage
   namespace: 3scale
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
   - ReadWriteOnce
@@ -32,6 +36,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: system-redis-storage
   namespace: 3scale
+  nnotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
   - ReadWriteOnce
@@ -46,6 +52,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: system-storage
   namespace: 3scale
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
   - ReadWriteMany
