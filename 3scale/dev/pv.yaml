@@ -36,7 +36,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: system-redis-storage
   namespace: 3scale
-  nnotations:
+  annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
