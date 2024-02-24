@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - pv.yaml
   - ns.yaml
-  - subscription.yaml
+  - 3scale-operator.yaml
