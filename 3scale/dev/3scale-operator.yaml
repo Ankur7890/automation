@@ -5,4 +5,4 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
-  wildcardDomain: apps.cluster-ss5p6.dynamic.redhatworkshops.io
+  wildcardDomain: apps.cluster-gtgm4.dynamic.redhatworkshops.io
