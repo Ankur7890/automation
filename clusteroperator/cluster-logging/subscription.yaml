@@ -5,6 +5,8 @@ metadata:
     operators.coreos.com/cluster-logging.openshift-logging: ''
   name: cluster-logging
   namespace: openshift-logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   channel: stable-5.8
   installPlanApproval: Automatic
