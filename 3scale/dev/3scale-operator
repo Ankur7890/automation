@@ -4,6 +4,6 @@ metadata:
   name: 3scale-apimanager
   namespace: 3scale
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   wildcardDomain: apps.cluster-gtgm4.dynamic.redhatworkshops.io
