@@ -4,7 +4,7 @@ metadata:
   labels:
     operators.coreos.com/3scale-operator.openshift-operators: ''
   name: 3scale-operator
-  namespace: 3scale
+  namespace: openshift-operators
   annotations:
      argocd.argoproj.io/sync-wave: "2"
 spec:
