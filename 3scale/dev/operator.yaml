@@ -3,7 +3,7 @@ kind: OperatorGroup
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-  name: 3scale-operator
+  name: 3scale-operator-group
   namespace: 3scale
 spec:
   targetNamespaces:
