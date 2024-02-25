@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "1"
   name: amq-streams
 
 ---
@@ -12,7 +12,7 @@ metadata:
   name: amq-streams-prod
   namespace: amq-streams
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   entityOperator:
     topicOperator: {}
