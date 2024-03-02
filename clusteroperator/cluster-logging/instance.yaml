@@ -26,7 +26,7 @@ spec:
           memory: 4Gi
         requests:
           cpu: 500m
-          memory: 4Gi
+          memory: 2Gi
       storage:
         storageClassName: "ocs-external-storagecluster-ceph-rbd"
         size: 10Gi
@@ -45,5 +45,5 @@ spec:
           memory: 1Gi
   collection:
     logs:
-      type: vector
+      type: fluentd
 
