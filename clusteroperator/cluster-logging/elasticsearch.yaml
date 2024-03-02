@@ -5,7 +5,7 @@ metadata:
   name: openshift-operators-redhat
   annotations:
     openshift.io/node-selector: ""
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "2"
   labels:
     openshift.io/cluster-monitoring: "true"
 
@@ -17,7 +17,7 @@ metadata:
   name: openshift-operators-redhat
   namespace: openshift-operators-redhat 
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   targetNamespaces:
   - openshift-operators-redhat 
@@ -32,10 +32,10 @@ metadata:
   name: elasticsearch-operator
   namespace: openshift-operators-redhat
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   channel: stable-5.8
-  installPlanApproval: Automatic
+  installPlanApproval: Manual
   name: elasticsearch-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
