@@ -44,6 +44,5 @@ spec:
           cpu: 500m
           memory: 1Gi
   collection:
-    logs:
-      type: fluentd
+    type: vector
 
