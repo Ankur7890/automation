@@ -3,6 +3,8 @@ kind: ActiveMQArtemis
 metadata:
   name: amq-broker-prod
   namespace: amq-broker
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   acceptors:
   - anycastPrefix: jms.queue.
