@@ -8,9 +8,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  channel: stable-5.8
+  channel: stable-5.7
   installPlanApproval: Manual
   name: cluster-logging
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: cluster-logging.v5.8.3
