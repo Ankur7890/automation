@@ -28,8 +28,8 @@ spec:
               openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -out keystore.p12 -password pass:$keyStorePassword
               keytool -importkeystore -srckeystore keystore.p12  -srcstoretype PKCS12 -destkeystore broker.ks -deststoretype JKS -srcstorepass $srcstorepass -deststorepass $deststorepass
               keytool -import -alias broker -keystore client.ts -file /tmp/tls.crt -storepass $storepass -noprompt
-              oc create secret generic amq-broker-tls --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword
-              oc create secret generic amq-broker-tls-console --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword 
+              oc create secret generic my-tls-secret --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword
+              oc create secret generic my-tls-secret-console --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword 
           imagePullPolicy: Always
           name: certificate-generate
           env:
