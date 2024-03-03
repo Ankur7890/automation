@@ -4,4 +4,4 @@ metadata:
   name: amq-broker
   annotations:
     openshift.io/node-selector: ""
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "-1"
