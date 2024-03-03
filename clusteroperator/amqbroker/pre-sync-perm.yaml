@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: sa-gener-
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  template:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.14
+          command:
+            - /bin/bash
+            - -c
+            - |
+              ns='amq-broker'
+              oc project $ns
+              oc create sa cert-gen
+              oc adm policy add-scc-to-user anyuid system:serviceaccount:amq-broker:cert-gen
+          imagePullPolicy: Always
+          name: sa-generate
+          env:
+            - name: SLEEP
+              value: "20"
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      terminationGracePeriodSeconds: 30
