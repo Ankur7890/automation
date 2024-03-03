@@ -9,7 +9,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   channel: stable-5.7
-  installPlanApproval: Manual
+  installPlanApproval: Automatic
   name: cluster-logging
   source: redhat-operators
   sourceNamespace: openshift-marketplace
