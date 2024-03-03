@@ -5,7 +5,7 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   template:
     spec:
@@ -18,6 +18,7 @@ spec:
               mkdir /home/certs
               cd /home/certs
               yum install -y java
+              ns='amq-broker'
               export storepass='changeme'
               export srcstorepass='changeme'
               export deststorepass='changeme'
@@ -28,8 +29,8 @@ spec:
               openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -out keystore.p12 -password pass:$keyStorePassword
               keytool -importkeystore -srckeystore keystore.p12  -srcstoretype PKCS12 -destkeystore broker.ks -deststoretype JKS -srcstorepass $srcstorepass -deststorepass $deststorepass
               keytool -import -alias broker -keystore client.ts -file /tmp/tls.crt -storepass $storepass -noprompt
-              oc create secret generic my-tls-secret --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword
-              oc create secret generic my-tls-secret-console --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword 
+              oc create secret generic my-tls-secret --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword -n $ns
+              oc create secret generic my-tls-secret-console --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword -n $ns
           imagePullPolicy: Always
           name: certificate-generate
           env:
