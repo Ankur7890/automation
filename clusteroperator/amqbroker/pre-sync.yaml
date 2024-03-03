@@ -1,1 +1,39 @@
-
+apiVersion: batch/v1
+kind: Job
+metadata:
+  enerateName: cert-gener-
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.14
+          command:
+            - /bin/bash
+            - -c
+            - |
+              mkdir /home/certs
+              cd /home/certs
+              yum install -y java
+              export storepass='changeme'
+              export srcstorepass='changeme'
+              export deststorepass='changeme'
+              export keyStorePassword='changme'
+              export trustStorePassword='changeme'
+              cert=$(oc get secret -n openshift-ingress | awk '{print $1}' | grep -iv name | grep -i ingress)
+              oc extract secret/$cert -n openshift-ingress --to=/tmp
+              openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -out keystore.p12 -password pass:$keyStorePassword
+              keytool -importkeystore -srckeystore keystore.p12  -srcstoretype PKCS12 -destkeystore broker.ks -deststoretype JKS -srcstorepass $srcstorepass -deststorepass $deststorepass
+              keytool -import -alias broker -keystore client.ts -file /tmp/tls.crt -storepass $storepass -noprompt
+              oc create secret generic amq-broker-tls --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword
+              oc create secret generic amq-broker-tls-console --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$keyStorePassword --from-literal=trustStorePassword=$trustStorePassword 
+          imagePullPolicy: Always
+          name: certificate-generate
+          env:
+            - name: SLEEP
+              value: "20"
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      terminationGracePeriodSeconds: 30
