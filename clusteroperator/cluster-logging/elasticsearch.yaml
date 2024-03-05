@@ -15,13 +15,10 @@ apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: openshift-operators-redhat
-  namespace: openshift-operators-redhat 
+  namespace: openshift-operators-redhat
   annotations:
     argocd.argoproj.io/sync-wave: "3"
-spec:
-  targetNamespaces:
-  - openshift-operators-redhat 
-
+spec: {}
 
 ---
 apiVersion: operators.coreos.com/v1alpha1
