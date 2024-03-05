@@ -1,31 +1,48 @@
-kind: ClusterLogging
-apiVersion: logging.openshift.io/v1
+apiVersion: "logging.openshift.io/v1"
+kind: "ClusterLogging"
 metadata:
-  name: instance
-  namespace: openshift-logging
+  name: "instance"
+  namespace: "openshift-logging"
   annotations:
-    openshift.io/node-selector: ""
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "7"
 spec:
-  collection:
-    type: vector
+  managementState: "Managed"
   logStore:
-    elasticsearch:
-      nodeCount: 3
-      redundancyPolicy: SingleRedundancy
-      resources:
-        requests:
-          memory: 2Gi
-      storage:
-        size: 10G
+    type: "elasticsearch"
     retentionPolicy:
       application:
-        maxAge: 7d
+        maxAge: 30d
+      infra:
+        maxAge: 30d
       audit:
-        maxAge: 7d
-    type: elasticsearch
-  managementState: Managed
+        maxAge: 30d
+    elasticsearch:
+      nodeCount: 3
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+      resources:
+        limits:
+          cpu: 500m
+          memory: 4Gi
+        requests:
+          cpu: 500m
+          memory: 4Gi
+      storage:
+        storageClassName: "standard-csi"
+        size: 10Gi
+      redundancyPolicy: "SingleRedundancy"
   visualization:
+    type: "kibana"
     kibana:
       replicas: 1
-    type: kibana
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 500m
+          memory: 1Gi
+  collection:
+    logs:
+      type: vector
