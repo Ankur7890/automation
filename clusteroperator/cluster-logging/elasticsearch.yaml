@@ -31,7 +31,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "4"
 spec:
-  channel: stable-5.7
+  channel: stable-5.8
   installPlanApproval: Automatic
   name: elasticsearch-operator
   source: redhat-operators
