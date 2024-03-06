@@ -8,14 +8,14 @@ spec:
     - list:
         elements:
           - cluster: {{ .Values.clusterlist.cluster }}
-            url: {{ .Values.clusterlist.cluster }}
+            url: '{{ .Values.clusterlist.url }}'
   template:
     metadata:
-      name: '{{cluster}}-logging'
+      name: '{{ .Values.clusterlist.cluster }}-logging'
     spec:
       destination:
         namespace: {{ .Values.destination.namespace }}
-        server: '{{url}}'
+        server: '{{ .Values.clusterlist.url }}'
       project: {{ .Values.project }}
       source:
         path: {{ .Values.paths.int }}
