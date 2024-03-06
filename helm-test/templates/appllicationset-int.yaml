@@ -7,29 +7,20 @@ spec:
   generators:
     - list:
         elements:
-          - cluster: osdmgmtdrprd01
-            url: 'https://kubernetes.default.svc'
-          - cluster: osdintdrprd01
-            url: 'https://api.osdintdrprd01.7sxv.p2.openshiftapps.com:6443'
-          - cluster: osdappdrprd01
-            url: 'https://api.osdappdrprd01.z6t6.p2.openshiftapps.com:6443'
+          - cluster: {{ .Values.clusterlist.cluster }}
+            url: {{ .Values.clusterlist.cluster }}
   template:
     metadata:
       name: '{{cluster}}-logging'
     spec:
       destination:
-        namespace: cluster-logging
+        namespace: {{ .Values.destination.namespace }}
         server: '{{url}}'
-      project: default
+      project: {{ .Values.project }}
       source:
-        path: cluster-logging
-        repoURL: 'https://github.com/OSD-INFRA-GITOPSDR/clusteroperators.git'
+        path: {{ .Values.paths.int }}
+        repoURL: {{ .Values.repoURL }}
         targetRevision: main
-      ignoreDifferences:
-      - kind: Namespace
-        jsonPointers:
-        - /metadata/labels
-        - /metadata/annotations
       syncPolicy:
         syncOptions:
           - ApplyOutOfSyncOnly=true
