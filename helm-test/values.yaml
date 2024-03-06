@@ -10,4 +10,4 @@ project: default
 repoURL: https://github.com/Ankur7890/automation.git
 
 paths:
-  int: amqstreams/overlays/int
+  int: clusteroperator/amqstreams/overlays/int
