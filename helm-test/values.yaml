@@ -1,5 +1,5 @@
 clusterlist:
-  - cluster: osdmgmtdrprd01
+    cluster: osdmgmtdrprd01
     url: 'https://kubernetes.default.svc'
 
 destination:
@@ -10,5 +10,4 @@ project: default
 repoURL: https://github.com/Ankur7890/automation.git
 
 paths:
- - int: https://github.com/Ankur7890/automation/amqstreams/overlays/int
- - app: https://github.com/Ankur7890/automation/amqstreams/overlays/aap
+  int: https://github.com/Ankur7890/automation/amqstreams/overlays/int
