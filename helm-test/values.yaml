@@ -14,3 +14,5 @@ project: default
 repoURL: https://github.com/Ankur7890/automation.git
 
 paths:
+ - int: https://github.com/Ankur7890/automation/amqstreams/overlays/int
+ - app: https://github.com/Ankur7890/automation/amqstreams/overlays/aap
