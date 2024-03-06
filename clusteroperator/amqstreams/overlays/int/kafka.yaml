@@ -1,0 +1,15 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: amq-streams-prod
+  namespace: amq-streams
+spec:
+  kafka:
+    storage:
+      type: jbod
+      volumes:
+      - deleteClaim: false
+        id: 0
+        size: 30Gi
+        type: persistent-claim
+ 
