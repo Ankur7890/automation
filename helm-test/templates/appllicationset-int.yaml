@@ -11,7 +11,7 @@ spec:
             url: '{{ .Values.clusterlist.url }}'
   template:
     metadata:
-      name: '{{ .Values.clusterlist.cluster }}-logging'
+      name: '{{ .Values.clusterlist.cluster }}-amq-streams'
     spec:
       destination:
         namespace: {{ .Values.destination.namespace }}
