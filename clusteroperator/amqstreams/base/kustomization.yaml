@@ -4,4 +4,5 @@ metadata:
    namespace: amq-streams
 resources:
  - install.yaml
+ - kafka.yaml
 
