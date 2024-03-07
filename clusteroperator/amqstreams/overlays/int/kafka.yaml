@@ -7,11 +7,19 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   kafka:
-    storage:
-      type: jbod
-      volumes:
-      - deleteClaim: false
-        id: 0
-        size: 30Gi
-        type: persistent-claim
+    listeners:
+    - name: external
+      port: 9094
+      tls: true
+      type: route
+      configuration:
+        bootstrap:
+          host: bootstrap.myrouter.com
+        brokers:
+        - broker: 0
+          host: broker-0.myrouter.com
+        - broker: 1
+          host: broker-1.myrouter.com
+        - broker: 2
+          host: broker-2.myrouter.com
  
