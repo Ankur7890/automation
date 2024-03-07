@@ -12,6 +12,8 @@ kind: Subscription
 metadata:
   name: amq-streams
   namespace: amq-streams
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   channel: stable
   installPlanApproval: Manual
