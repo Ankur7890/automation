@@ -22,12 +22,16 @@ spec:
       type: route
       configuration:
         bootstrap:
-          host: bootstrap.myrouter.com
+          labels: 
+            type: sharded
         brokers:
         - broker: 0
-          host: broker-0.myrouter.com
+          labels: 
+            type: sharded
         - broker: 1
-          host: broker-1.myrouter.com
+          labels: 
+            type: sharded 
         - broker: 2
-          host: broker-2.myrouter.com
+          labels: 
+            type: sharded
  
