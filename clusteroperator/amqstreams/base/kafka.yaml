@@ -3,7 +3,8 @@ kind: Kafka
 metadata:
   name: amq-streams-prod
   namespace: amq-streams
-  argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   entityOperator:
     topicOperator: {}
