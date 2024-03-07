@@ -1,4 +1,4 @@
 resources:
 - ../../base
-#patchesStrategicMerge:
-#- <>.yaml
+patchesStrategicMerge:
+- smmr.yaml
