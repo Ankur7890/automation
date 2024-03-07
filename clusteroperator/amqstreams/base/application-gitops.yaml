@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test
+spec:
+  destination:
+    name: ''
+    namespace: amq-streams
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: clusteroperator/amqstreams/overlays/int
+    repoURL: 'https://github.com/Ankur7890/automation.git'
+    targetRevision: main
+  sources: []
+  project: default
+  syncPolicy:
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
