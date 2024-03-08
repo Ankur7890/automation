@@ -4,7 +4,7 @@ metadata:
   name: 3scale-og
   namespace: 3scale
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   targetNamespaces:
    - 3scale
