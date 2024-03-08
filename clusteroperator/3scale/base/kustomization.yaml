@@ -6,4 +6,3 @@ resources:
  - ns.yaml
  - pv.yaml
  - subscription.yaml
- - apimanager.yaml
