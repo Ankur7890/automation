@@ -1,4 +1,4 @@
 resources:
 - ../../base
 patchesStrategicMerge:
-- kafka.yaml
+- apimanager.yaml
