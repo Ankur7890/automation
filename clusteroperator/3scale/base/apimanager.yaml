@@ -1,0 +1,10 @@
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIManager
+metadata:
+  name: 3scale-apimanager
+  namespace: 3scale
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  wildcardDomain: apps.cluster-tq9x2.dynamic.redhatworkshops.io
