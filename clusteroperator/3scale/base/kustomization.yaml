@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 metadata:
-   namespace: amq-streams
+   namespace: 3scale
 resources:
  - ns.yaml
  - pv.yaml
