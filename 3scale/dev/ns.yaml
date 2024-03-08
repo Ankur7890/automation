@@ -4,3 +4,5 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   name: 3scale
+  labels:
+    type: sharded
