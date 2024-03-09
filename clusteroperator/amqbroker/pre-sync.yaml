@@ -9,7 +9,8 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: cert-gen
+      securityContext:
+         runAsUser: RunAsAny
       containers:
         - image: registry.redhat.io/openshift4/ose-cli:v4.14
           command:
@@ -25,6 +26,7 @@ spec:
               export deststorepass='changeme'
               export keyStorePassword='changme'
               export trustStorePassword='changeme'
+              oc login https://api.cluster-tq9x2.dynamic.redhatworkshops.io:6443 --token='eyJhbGciOiJSUzI1NiIsImtpZCI6InFKcU5pcUsxR2RnWTJWTklZc1cxc1pBRk4wSGVkbUN2czVXejlaUEExSjgifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc0MTU0NjczMiwiaWF0IjoxNzEwMDEwNzMyLCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6InRlc3QiLCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiYW5rdXIiLCJ1aWQiOiIzMGJkODA0Ny0yYjg2LTQ1ODAtODZmYi00ZWYzMzlkZjhmNDMifX0sIm5iZiI6MTcxMDAxMDczMiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OnRlc3Q6YW5rdXIifQ.E7gZ7iDhZg6ZIdLMhLGYCerCZI0UJR3mFIlEjEoJdKlemTQb9mi-0Sohxj0JiGrOod09TaWerFX9UlmHneOjJnVjs87-u8iDTsJRZ84ycOW86SdXm4UzatBdbEP-uYKE_xIv7KGN9mwQH7u57OoaeezsGUtOUmAtZ6InLBaOwT7Bwihg3Pcb2w01dahPO45VXX3_Dvp3ugXST7LEVKqgxmS-NRHhS1ahXqUbhaMJdeXXHJ7JTHId_xA-_u83AoprPx3GSqJZmabpmaiLPD6Xh9vOdKAHa5LMdLc6go6foxEsNj2Vzp3rGZklp3dD73W22btotx7Tn4BREveddoLJnZMcRHbqf46knaiCkPGY8xqDGlhjhqwaNNy4H9-N9f5wfNs6yACFegCHIZFYeMQdEVAIbJfup8Xi0bE46eDI96v-Y8JpfcKVpc0WtZWH8VwnOelhbmywtfMoevIIWVE7veOyHxlQsQP5_rXfE4ahFrzmb-KzgoVtHjmPvWjvqov_TAITUTjgDq-QkEnNWvWo4h1OzVYRqOccmL-LJcMQruQ0NC0tZ-LQmnZI-5AL9ZQWazTHsyhqbVdsgy_FVeCU_pSNzO07kn_vhKsAKqY46HiwLt_MjnQiDbF7jWxqicyrB1xMmZCjg9UuvyhtkJwlVTkGucWqmYG61D_HuoIAUCI' --insecure-skip-tls-verify=true
               cert=$(oc get secret -n openshift-ingress | awk '{print $1}' | grep -iv name | grep -i ingress)
               oc extract secret/$cert -n openshift-ingress --to=/tmp
               openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -out keystore.p12 -password pass:$keyStorePassword
