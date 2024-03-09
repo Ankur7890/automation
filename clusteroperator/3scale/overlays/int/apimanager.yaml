@@ -7,5 +7,5 @@ metadata:
     argocd.argoproj.io/sync-wave: "3"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  wildcardDomain: apps.cluster-tq9x2.dynamic.redhatworkshops.io
+  wildcardDomain: internalapps.cluster-tq9x2.dynamic.redhatworkshops.io
 
