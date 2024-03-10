@@ -15,6 +15,7 @@ metadata:
   namespace: openshift-ingress
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    kubectl.kubernetes.io/last-applied-configuration: ""
 rules:
 - apiGroups:
   - ""
@@ -35,6 +36,7 @@ metadata:
   namespace: openshift-ingress
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    kubectl.kubernetes.io/last-applied-configuration: ""
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -54,6 +56,7 @@ metadata:
   namespace: amq-broker
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    kubectl.kubernetes.io/last-applied-configuration: ""
 rules:
 - apiGroups:
   - ""
@@ -75,6 +78,7 @@ metadata:
   namespace: amq-broker
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    kubectl.kubernetes.io/last-applied-configuration: ""
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -93,6 +97,7 @@ metadata:
   namespace: amq-broker
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    kubectl.kubernetes.io/last-applied-configuration: ""
 rules:
 - apiGroups:
   - security.openshift.io
@@ -112,6 +117,7 @@ metadata:
   namespace: amq-broker
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    kubectl.kubernetes.io/last-applied-configuration: ""
 subjects:
   - kind: ServiceAccount
     name: amq-broker-token
