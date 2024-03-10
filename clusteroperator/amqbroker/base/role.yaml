@@ -1,1 +1,75 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: amq-broker-token
+  namespace: amq-broker
 
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: podview
+  namespace: openshift-ingress
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: podview
+  namespace: openshift-ingress
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: podview
+subjects:
+- kind: ServiceAccount
+  name: amq-broker-token
+  namespace: amq-broker
+
+---
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-sa-perm
+  namespace: amq-broker
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-sa-perm
+  namespace: amq-broker
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-sa-perm
+subjects:
+- kind: ServiceAccount
+  name: amq-broker-token
+  namespace: amq-broker
