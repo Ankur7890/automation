@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
   - ns.yaml
   - role.yaml
-  - pre-sync-job.yaml
+  #- pre-sync-job.yaml
   - subscription.yaml
   - broker.yaml
