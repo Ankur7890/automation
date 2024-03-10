@@ -3,6 +3,8 @@ kind: ServiceAccount
 metadata:
   name: amq-broker-token
   namespace: amq-broker
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 
 ---
 
@@ -11,6 +13,8 @@ kind: Role
 metadata:
   name: podview
   namespace: openshift-ingress
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 rules:
 - apiGroups:
   - ""
@@ -29,6 +33,8 @@ kind: RoleBinding
 metadata:
   name: podview
   namespace: openshift-ingress
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -46,6 +52,8 @@ kind: Role
 metadata:
   name: pod-sa-perm
   namespace: amq-broker
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 rules:
 - apiGroups:
   - ""
@@ -81,6 +89,8 @@ kind: Role
 metadata:
   name: scc-anyuid
   namespace: amq-broker
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 rules:
 - apiGroups:
   - security.openshift.io
@@ -98,9 +108,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: sa-to-scc-anyuid
   namespace: amq-broker
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 subjects:
   - kind: ServiceAccount
-    name: default
+    name: amq-broker-token
 roleRef:
   kind: Role
   name: scc-anyuid
