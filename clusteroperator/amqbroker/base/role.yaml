@@ -41,8 +41,8 @@ roleRef:
   name: podview
 subjects:
 - kind: ServiceAccount
-  name: amq-broker-token
-  namespace: amq-broker
+  name: login-token
+  namespace: test
 
 ---
 
@@ -73,14 +73,16 @@ kind: RoleBinding
 metadata:
   name: pod-sa-perm
   namespace: amq-broker
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: pod-sa-perm
 subjects:
 - kind: ServiceAccount
-  name: amq-broker-token
-  namespace: amq-broker
+  name: login-token
+  namespace: test
 
 ---
 
