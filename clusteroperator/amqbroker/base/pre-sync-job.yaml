@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: cert-gen
   annotations:
-    argocd.argoproj.io/hook: Skip
+    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
     #argocd.argoproj.io/hook: Skip
     argocd.argoproj.io/sync-wave: "1"
