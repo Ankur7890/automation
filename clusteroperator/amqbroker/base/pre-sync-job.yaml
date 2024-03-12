@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: cert-gen-int
-  namespace: test
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -13,12 +12,6 @@ spec:
       serviceAccountName: login-token
       containers:
         - image: registry.redhat.io/openshift4/ose-cli:v4.14
-          command:
-            - /bin/bash
-            - -c
-            - |
-              sleep 5
-              echo "sync job for cert"
           imagePullPolicy: Always
           name: certificate-generate
           env:
