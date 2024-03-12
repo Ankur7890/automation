@@ -6,17 +6,4 @@ metadata:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
     argocd.argoproj.io/sync-wave: "1"
-spec:
-  template:
-    spec:
-      serviceAccountName: login-token
-      containers:
-        - image: registry.redhat.io/openshift4/ose-cli:v4.14
-          imagePullPolicy: Always
-          name: certificate-generate
-          env:
-            - name: SLEEP
-              value: "20"
-      dnsPolicy: ClusterFirst
-      restartPolicy: OnFailure
-      terminationGracePeriodSeconds: 30
+spec: {}
