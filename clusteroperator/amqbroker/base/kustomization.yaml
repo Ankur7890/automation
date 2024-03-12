@@ -6,3 +6,4 @@ resources:
   - pre-sync-job.yaml
   - subscription.yaml
   - broker.yaml
+  - route.yaml
