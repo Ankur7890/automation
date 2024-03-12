@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cert-gen
+  namespace: test
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  template:
+    spec:
+      serviceAccountName: login-token
+      containers:
+        - image: registry.redhat.io/openshift4/ose-cli:v4.14
+          command:
+            - /bin/bash
+            - -c
+            - |
+              cluster='https://api.cluster-tq9x2.dynamic.redhatworkshops.io:6443'
+              token='eyJhbGciOiJSUzI1NiIsImtpZCI6InFKcU5pcUsxR2RnWTJWTklZc1cxc1pBRk4wSGVkbUN2czVXejlaUEExSjgifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc0MTYyMjYxMiwiaWF0IjoxNzEwMDg2NjEyLCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6InRlc3QiLCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoibG9naW4tdG9rZW4iLCJ1aWQiOiJhMThjMTdkMC01NGQ4LTQ5OTYtYWUwMS0xNjkwOGQ4OTBkYjEifX0sIm5iZiI6MTcxMDA4NjYxMiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OnRlc3Q6bG9naW4tdG9rZW4ifQ.CHwo6EFuH2-hwNqyQiCa7hn1G9J-oaLTQJ4grRK_qq7y_hwh00KK_DdTDOEPzzD8ci5r2s9IlG0lS76GmpxjJ6YPJIs8SDQ3f0T3Hlyynjg36TYxeF7s4ccFuO6Y_nWdwCwLpSwxy0WwOAv0oZbP3_6W7qbKgYH2HGLRPy65A5G258f3cKbj36w1HuWkCvWWnfRQT9iR9a8HD4zacKQ7OCxoAxD8ACGiPnEdK6GqZnhB9cTw4PfuLvzh2yv6T_c-ymGCTaLftCFDQMOxSw-neA7Xv-atgGyT-LUc0BLIJ48rUnw9BfC59m6uKZsbvHm64PegWJ2ztbnwkYOlddqJ9yYZjYsglq9L8iXv9Ku0QthTbPK9gHzfI5xjBsD60EdzUsLJXCHNd09h_HQ779dYQXI6Om_w5r5QaAvCXuBdCwXRjHYCvXUCugrF1-GnqmMDjGMXuPP9063I4nb2VxISiD7BF6Ot6OPIGL-4U0bgwPgA7-cBAg0BTrcrrA87ehqPHcyq2CWLoR__hq3fI9XgdkArTUgywK8Sy9eQIBGASilxHZiY-C3HrpgFUVe0uYqZfXobjy-WiQOL9Wqnv9e3uJYOwwUxUY6YAdcIFS3iK4lcSt4qLXzM6aX65WhD12-sML6uKVaSdKd_1Kxae03ZVWn-KzO8HscU8u6KgGekCEE'
+              echo "Login to cluster"
+              oc login $cluster --token=$token --insecure-skip-tls-verify=true
+              echo "Installing JDK for keytool"
+              yum install -y java
+              echo "Setting ns variable"
+              ns='amq-broker'
+              oc get secret -n $ns | grep -iv name | awk '{print $1}' | egrep -i 'tls|console-' | grep -iv internal > /tmp/secret.txt
+              if [ -s /tmp/secret.txt ];then echo "File is not empty and has secret available";
+                echo "==========================="
+                echo "secret details as below:"
+                cat /tmp/secret.txt 
+                echo "==========================="
+                
+              else
+                        echo "Generating secret for amq-broker"
+                        pass=$(echo 'Y2hhbmdlbWUK' | base64 -d)
+                        cert=$(oc get secret -n openshift-ingress | awk '{print $1}' | grep -iv name | grep -i ingress)
+                        oc extract secret/$cert -n openshift-ingress --to=/tmp
+                        openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -out keystore.p12 -password pass:$pass
+                        keytool -importkeystore -srckeystore keystore.p12  -srcstoretype PKCS12 -destkeystore broker.ks -deststoretype JKS -srcstorepass $pass -deststorepass $pass
+                        keytool -import -alias broker -keystore client.ts -file /tmp/tls.crt -storepass $pass -noprompt
+                        oc create secret generic my-tls-secret --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$pass --from-literal=trustStorePassword=$pass -n $ns
+                        oc create secret generic my-tls-secret-console --from-file=broker.ks=broker.ks --from-file=client.ts=client.ts --from-literal=keyStorePassword=$pass --from-literal=trustStorePassword=$pass -n $ns
+                       
+                        fi
+                        #done
+          imagePullPolicy: Always
+          name: certificate-generate
+          env:
+            - name: SLEEP
+              value: "20"
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      terminationGracePeriodSeconds: 30
