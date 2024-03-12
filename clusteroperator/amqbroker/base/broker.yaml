@@ -10,7 +10,7 @@ spec:
   acceptors:
   - anycastPrefix: jms.queue.
     enabledProtocols: TLSv1,TLSv1.1,TLSv1.2
-    expose: false
+    expose: true
     multicastPrefix: /topic/
     name: amqp
     port: 5672
@@ -32,7 +32,7 @@ spec:
     verifyHost: true
     wantClientAuth: true
   console:
-    expose: false
+    expose: true
     sslEnabled: true
     sslSecret: my-tls-secret-console
   deploymentPlan:
