@@ -1,5 +1,5 @@
 resources:
 - ../../base
-#patchesStrategicMerge:
-#- apimanager.yaml
+patchesStrategicMerge:
+- pre-sync-job.yaml
 
