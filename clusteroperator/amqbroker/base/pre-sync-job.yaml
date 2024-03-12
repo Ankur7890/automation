@@ -9,7 +9,7 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: amq-broker-token
+      serviceAccountName: login-token
       containers:
         - image: registry.redhat.io/openshift4/ose-cli:v4.14
           command:
