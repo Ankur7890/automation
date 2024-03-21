@@ -1,6 +1,0 @@
-resources:
-- ../../base
-patchesStrategicMerge:
-- pre-sync-job.yaml
-#- route.yaml
-
