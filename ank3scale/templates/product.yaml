@@ -1,0 +1,70 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Product
+metadata:
+  name: {{ .Values.product.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "insecure_skip_verify": "true"
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  name: {{ .Values.product.name  | quote }}
+  systemName: {{ .Values.product.name | quote }}
+  providerAccountRef:
+     name: {{ .Values.providerAccountRef.name }}
+  deployment:
+    {{- if .Values.product.deployment.apicastSelfManaged.enabled }}
+      apicastSelfManaged:
+        {{- with .Values.product.deployment.apicastSelfManaged }}
+        stagingPublicBaseURL: {{ .stagingPublicBaseURL }}
+        productionPublicBaseURL: {{ .productionPublicBaseURL }}
+        authentication:
+           userkey:
+             authUserKey: {{ .authentication.userkey.authuserkey }}
+             credentials: {{ .authentication.userkey.credentials | quote }}
+    {{- else }}
+      apicastManaged:
+        {{- with .Values.product.deployment.apicastManaged }}
+        authentication:
+           userkey:
+             authUserKey: {{ .authentication.userkey.authuserkey }}
+             credentials: {{ .authentication.userkey.credentials | quote }}
+        {{- end }}
+        {{- end }}
+    {{- end }}
+  metrics:
+    {{- if .Values.product.metrics.hits.enabled }}
+    hits:
+      {{- with .Values.product.metrics }}
+      description: Number of API hits
+      friendlyName: {{ .friendlyName | quote }}
+      unit: {{ .unit }}
+      {{- end }}
+    {{- end }}
+  methods:
+   {{- range .Values.product.methods }}
+      {{ .name }}:
+         friendlyName: {{ .friendlyName }}         
+{{- end }}
+  mappingRules: 
+{{- range .Values.product.mappingRules }}
+    - httpMethod: {{ .httpMethod }}
+      pattern: {{ .pattern | quote }}
+      increment: {{ .increment }}
+      metricMethodRef: {{ .metricMethodRef }}
+{{- end  }}
+  policies:
+{{- include "3scale.policies" . }}
+  applicationPlans:
+  {{- if .Values.plan.basicplan.enabled }}
+    basicplan:
+      name: {{ .Values.plan.basicplan.name | quote }}
+  {{- else if .Values.plan.additionalservicesprod.enabled }}
+    additionalservicesprod:
+      name: {{ .Values.plan.additionalservicesprod.name | quote }}
+  {{- else if .Values.plan.baseplan.enabled }}
+    baseplan:
+      name: {{ .Values.plan.baseplan.name | quote }}
+  {{- end }}
+  backendUsages:
+     {{ .Values.backend.name }}:
+         path: {{ .Values.path | quote }}
