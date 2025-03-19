@@ -1,0 +1,10 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: ProxyConfigPromote
+metadata:
+  name: {{ .Values.product.name }}
+  annotations:
+     "insecure_skip_verify": "true"
+     argocd.argoproj.io/sync-wave: "3"
+spec:
+  productCRName: {{ .Values.product.name }}
+  production: true
