@@ -89,7 +89,6 @@ Create the name of the service account to use
 {{- else if eq .name "headers" }}
   - name: {{ .name }}   
     configuration:
-    {{- if .configuration.custom_response }}
        response:
        {{- range .configuration.response }}
        - header: {{ .header | quote }}
@@ -97,10 +96,7 @@ Create the name of the service account to use
          value: {{ .value | quote }}
          value_type: {{ .value_type | quote }}
        {{- end }}
-       {{- else }}
-       response: {{ .configuration.response | quote }}
-       {{- end  }}
-    {{- else }}
+{{- else }}
   - name: {{ .name }}
     configuration:
        {{- range $k, $v := .configuration }}
