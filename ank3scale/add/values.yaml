@@ -1,0 +1,226 @@
+namespace: 3scale
+
+backend:
+   name: bookingwidgets-prod
+   systemName: bookingwidgets-prod
+   flag_metr_mapp_meth: false
+ 
+privateBaseURL: 'https://bookingwidgets-ms-prod.apps.ocpintprdclu2.goindigo.in:443/'
+
+product:
+   name: bookingwidgets-prod
+   metrics:
+      hits:
+        enabled: true
+      unit: "hit"
+      friendlyName: Hits
+   methods:
+     - name: getwidgets
+       friendlyName: getwidgets
+     - name: getstations
+       friendlyName: getstations
+     - name: getcities
+       friendlyName: getcities
+     - name: getcurrencies
+       friendlyName: getcurrencies
+     - name: getcountries
+       friendlyName: getcountries
+     - name: AirportName
+       friendlyName: AirportName
+     - name: citynamebycode
+       friendlyName: citynamebycode
+     - name: availableairportname
+       friendlyName: availableairportname
+     - name: getcommommasterdata
+       friendlyName: getcommommasterdata
+     - name: GetFareCalender
+       friendlyName: GetFareCalender
+   deployment:
+       apicastSelfManaged:
+           enabled: true
+           stagingPublicBaseURL: https://bookingwidgets-prod-3scale-apicast-staging.apps.ocpintprdclu2.goindigo.in:443
+           productionPublicBaseURL: https://bookingwidgets-prod-3scale-apicast-production.apps.ocpintprdclu2.goindigo.in:443
+           authentication:
+               userkey:
+                 authuserkey: user_key
+                 credentials: headers
+       apicastManaged:
+           enabled: false
+           authentication:
+               userkey:
+                 authuserkey: user_key
+                 credentials: headers
+   mappingRules:
+    - httpMethod: OPTIONS
+      pattern: "/v1/getfarecalendar"
+      increment: 1
+      metricMethodRef: "GetFareCalender"
+    - httpMethod: POST
+      pattern: "/v1/getfarecalendar"
+      increment: 1
+      metricMethodRef: "GetFareCalender"
+    - httpMethod: GET
+      pattern: "/v1/setting/getcommommasterdata"
+      increment: 1
+      metricMethodRef: "getcommommasterdata"
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/getallavailableairportname"
+      increment: 1
+      metricMethodRef: "availableairportname"
+    - httpMethod: POST
+      pattern: "/v1/setting/getallavailableairportname"
+      increment: 1
+      metricMethodRef: "availableairportname"
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/getcitynamebycode"
+      increment: 1
+      metricMethodRef: "citynamebycode"
+    - httpMethod: POST
+      pattern: "/v1/setting/getcitynamebycode"
+      increment: 1
+      metricMethodRef: "citynamebycode"
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/getairportnamebycode"
+      increment: 1
+      metricMethodRef: "AirportName"
+    - httpMethod: POST
+      pattern: "/v1/setting/getairportnamebycode"
+      increment: 1
+      metricMethodRef: "AirportName"
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/getcountry"
+      increment: 1
+      metricMethodRef: "getcountries"
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/getcurrency"
+      increment: 1
+      metricMethodRef: "getcurrencies"  
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/getcity"
+      increment: 1
+      metricMethodRef: "getcities"
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/getstation"
+      increment: 1
+      metricMethodRef: "getstations"
+    - httpMethod: OPTIONS
+      pattern: "/v1/setting/indigowidgets"
+      increment: 1
+      metricMethodRef: "getwidgets"
+    - httpMethod: GET
+      pattern: "/v1/setting/getcountry"
+      increment: 1
+      metricMethodRef: "getcountries"
+    - httpMethod: GET
+      pattern: "/v1/setting/getcurrency"
+      increment: 1
+      metricMethodRef: "getcurrencies"
+    - httpMethod: GET
+      pattern: "/v1/setting/getcity"
+      increment: 1
+      metricMethodRef: "getcities"
+    - httpMethod: GET
+      pattern: "/v1/setting/getstation"
+      increment: 1
+      metricMethodRef: "getstations" 
+    - httpMethod: GET
+      pattern: "/v1/setting/indigowidgets"
+      increment: 1
+      metricMethodRef: "getwidgets"
+    - httpMethod: GET
+      pattern: "/"
+      increment: 1
+      metricMethodRef: "hits"  
+   policies:
+   - name: cors
+     configuration:
+         allow_headers: 
+         - Origin
+         - X-Requested-With
+         - Content-Type
+         - Accept
+         - Authorization
+         - user_key
+         - Access-Control-Allow-Origin
+         - Dpl
+         - x-datadog-trace-id
+         - x-datadog-parent-id
+         - x-datadog-origin
+         - x-datadog-sampling-priority
+         - traceparent	
+         allow_credentials: true
+         allow_methods:
+         - GET
+         - HEAD
+         - POST
+         - PUT
+         - DELETE
+         - PATCH
+         - OPTIONS
+         - TRACE
+         - CONNECT
+         allow_origin: "(aem-prod-skyplus6e.goindigo.in|goindigo.in)"
+         max_age: 2000
+         custom_method: true
+         custom_header: true
+     enabled: true
+     version: builtin
+   - name: headers
+     version: builtin
+     enabled: true
+     configuration:
+       response:
+       - op: set
+         value_type: plain
+         value: "max-age=86400; includeSubDomain"
+         header: "Strict-Transport-Security"
+       - op: set
+         value_type: plain
+         value: "nosniff"
+         header: "X-Content-Type-Options"
+       - op: set
+         value_type: plain
+         value: "default-src 'self'; object-src 'none'; form-action 'none'; report-to csp-endpoint"
+         header: "Content-Security-Policy"    
+   - name: upstream_connection
+     configuration:
+       send_timeout: 300
+       connect_timeout: 300
+       read_timeout: 300
+     enabled: true
+     version: builtin
+   - name: apicast
+     configuration: {}
+     enabled: true
+     version: builtin
+   - configuration:
+          custom_logging: "'Time: [{{time_local}}] {{host}}:{{server_port}} {{remote_addr}}:{{remote_port}} Request: {{request}} to service {{service.id}} Status: {{status}} Body bytes sent: {{body_bytes_sent}}  total request_time(including async): [{{request_time}}] Post action: {{post_action_impact}} upstream_connect_time: [{{upstream_connect_time }}] upstream_response_time: [{{ upstream_response_time }}]'"
+          enable_access_logs: false
+          combine_op: and
+     enabled: true
+     name: logging
+     version: builtin    
+
+     
+plan:
+  basicplan:
+       enabled: true
+       name: BasicPlan
+  additionalservicesprod:
+       enabled: false
+       name: AdditionalServices-Prod
+         
+
+route:
+  enabled: true
+  name: self-managed-bookingwidgets-prod
+  host: bookingwidgets-prod-3scale-apicast-production.apps.ocpintprdclu2.goindigo.in
+  service: apicast-production
+
+path: /
+
+providerAccountRef:
+     name: indigo-intarosky
+
+accountCR:
+   name: indigo-intarosky
