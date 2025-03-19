@@ -1,14 +1,14 @@
 namespace: 3scale
 
 backend:
-   name: bookingwidgets-prod
-   systemName: bookingwidgets-prod
+   name: ankur-test
+   systemName: ankur-test
    flag_metr_mapp_meth: false
  
-privateBaseURL: 'https://bookingwidgets-ms-prod.apps.ocpintprdclu2.goindigo.in:443/'
+privateBaseURL: 'https://google.com:443/'
 
 product:
-   name: bookingwidgets-prod
+   name: ankur-test
    metrics:
       hits:
         enabled: true
@@ -38,8 +38,8 @@ product:
    deployment:
        apicastSelfManaged:
            enabled: true
-           stagingPublicBaseURL: https://bookingwidgets-prod-3scale-apicast-staging.apps.ocpintprdclu2.goindigo.in:443
-           productionPublicBaseURL: https://bookingwidgets-prod-3scale-apicast-production.apps.ocpintprdclu2.goindigo.in:443
+           stagingPublicBaseURL: https://ankur-test-3scale-apicast-staging.apps.dummy.ankur.in:443
+           productionPublicBaseURL: https://ankur-test-3scale-apicast-production.apps.dummy.ankur.in:443
            authentication:
                userkey:
                  authuserkey: user_key
@@ -104,7 +104,7 @@ product:
       increment: 1
       metricMethodRef: "getstations"
     - httpMethod: OPTIONS
-      pattern: "/v1/setting/indigowidgets"
+      pattern: "/v1/setting/ankurwidgets"
       increment: 1
       metricMethodRef: "getwidgets"
     - httpMethod: GET
@@ -124,7 +124,7 @@ product:
       increment: 1
       metricMethodRef: "getstations" 
     - httpMethod: GET
-      pattern: "/v1/setting/indigowidgets"
+      pattern: "/v1/setting/ankurwidgets"
       increment: 1
       metricMethodRef: "getwidgets"
     - httpMethod: GET
@@ -159,7 +159,7 @@ product:
          - OPTIONS
          - TRACE
          - CONNECT
-         allow_origin: "(aem-prod-skyplus6e.goindigo.in|goindigo.in)"
+         allow_origin: "(aem-prod-skyplus6e.ankur.in|ankur.in)"
          max_age: 2000
          custom_method: true
          custom_header: true
@@ -213,14 +213,14 @@ plan:
 
 route:
   enabled: true
-  name: self-managed-bookingwidgets-prod
-  host: bookingwidgets-prod-3scale-apicast-production.apps.ocpintprdclu2.goindigo.in
+  name: self-managed-ankur-test
+  host: ankur-test-3scale-apicast-production.apps.dummy.ankur.in
   service: apicast-production
 
 path: /
 
 providerAccountRef:
-     name: indigo-intarosky
+     name: ankur-intarosky
 
 accountCR:
-   name: indigo-intarosky
+   name: ankur-intarosky
