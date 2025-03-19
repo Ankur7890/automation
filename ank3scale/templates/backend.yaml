@@ -1,0 +1,37 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Backend
+metadata:
+  name: {{ .Values.backend.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "insecure_skip_verify": "true"
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  name: {{ .Values.backend.name }}
+  providerAccountRef:
+     name: {{ .Values.providerAccountRef.name }}
+  privateBaseURL: {{ .Values.privateBaseURL | squote }}
+  systemName: {{ .Values.backend.systemName }}
+  {{- if .Values.backend.flag_metr_mapp_meth }}
+  metrics:
+    {{- if .Values.backend.metrics.hits.enabled }}
+    hits:
+      {{- with .Values.backend.metrics }}
+      description: Number of API hits
+      friendlyName: {{ .friendlyName }}
+      unit: {{ .unit }}
+      {{- end }}
+    {{- end }}
+  methods:
+   {{- range .Values.backend.methods }}
+      {{ .name }}:
+         friendlyName: {{ .friendlyName }}
+{{- end }}
+  mappingRules:
+{{- range .Values.backend.mappingRules }}
+    - httpMethod: {{ .httpMethod }}
+      pattern: {{ .pattern | quote }}
+      increment: {{ .increment }}
+      metricMethodRef: {{ .metricMethodRef }}
+{{- end  }}
+   {{- end }}
