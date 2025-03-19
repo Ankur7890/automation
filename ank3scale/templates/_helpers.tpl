@@ -69,24 +69,24 @@ Create the name of the service account to use
     configuration:
        {{- if .configuration.custom_header }}
        allow_headers:
-          {{- range $h := .configuration.allow_headers }}
-         - {{ $h }}
-           {{- end }}
-         {{- else }}
+       {{- range $h := .configuration.allow_headers }}
+       - {{ $h }}
+       {{- end }}
+       {{- else }}
        allow_headers: {{ .configuration.allow_headers | quote }}
-         {{- end }}
-        {{- if .configuration.custom_method }}
+       {{- end }}
+       {{- if .configuration.custom_method }}
        allow_methods:
-         {{- range $m := .configuration.allow_methods }}
-         - {{ $m }}
-           {{- end  }}
-        {{- else }}
-             allow_methods: {{ .configuration.allow_methods }}
-        {{- end }}
+       {{- range $m := .configuration.allow_methods }}
+       - {{ $m }}
+       {{- end  }}
+       {{- else }}
+       allow_methods: {{ .configuration.allow_methods }}
+       {{- end }}
        max_age: {{ .configuration.max_age }}
        allow_credentials: {{ .configuration.allow_credentials }}
        allow_origin: {{ .configuration.allow_origin }}
-    {{- else if eq .name "headers" }}
+{{- else if eq .name "headers" }}
   - name: {{ .name }}   
     configuration:
     {{- if .configuration.custom_response }}
@@ -97,7 +97,7 @@ Create the name of the service account to use
          value: {{ .value | quote }}
          value_type: {{ .value_type | quote }}
        {{- end }}
-         {{- else }}
+       {{- else }}
        response: {{ .configuration.response | quote }}
        {{- end  }}
     {{- else }}
