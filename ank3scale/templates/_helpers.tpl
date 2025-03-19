@@ -61,55 +61,53 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/*
-Define policies dynamically based on values.yaml
-*/}}
+
 {{- define "3scale.policies" -}}
 {{- range .Values.product.policies }}
-  - name: {{ .name | quote }}
-    version: {{ .version | quote }}
-    enabled: {{ .enabled }}
+{{- if eq .name "cors" }}
+  - name: {{ .name }}
     configuration:
-      {{- if .configuration.response }}
-      response:
-        {{- range .configuration.response }}
-        - header: {{ .header | quote }}
-          op: {{ .op | quote }}
-          value: {{ .value | quote }}
-          value_type: {{ .value_type | quote }}
+       {{- if .configuration.custom_header }}
+       allow_headers:
+          {{- range $h := .configuration.allow_headers }}
+         - {{ $h }}
+           {{- end }}
+         {{- else }}
+       allow_headers: {{ .configuration.allow_headers | quote }}
+         {{- end }}
+        {{- if .configuration.custom_method }}
+       allow_methods:
+         {{- range $m := .configuration.allow_methods }}
+         - {{ $m }}
+           {{- end  }}
+        {{- else }}
+             allow_methods: {{ .configuration.allow_methods }}
         {{- end }}
-      {{- end }}
-
-      {{- if .configuration.allow_headers }}
-      allow_headers:
-        {{- range .configuration.allow_headers }}
-        - {{ . | quote }}
-        {{- end }}
-      {{- end }}
-
-      {{- if .configuration.allow_methods }}
-      allow_methods:
-        {{- range .configuration.allow_methods }}
-        - {{ . | quote }}
-        {{- end }}
-      {{- end }}
-
-      {{- if .configuration.max_age }}
-      max_age: {{ .configuration.max_age | quote }}
-      {{- end }}
-
-      {{- if .configuration.allow_credentials }}
-      allow_credentials: {{ .configuration.allow_credentials | quote }}
-      {{- end }}
-
-      {{- if .configuration.allow_origin }}
-      allow_origin: {{ .configuration.allow_origin | quote }}
-      {{- end }}
-
-      {{- range $k, $v := .configuration }}
-      {{- if and (ne $k "response") (ne $k "allow_headers") (ne $k "allow_methods") (ne $k "max_age") (ne $k "allow_credentials") (ne $k "allow_origin") }}
-      {{ $k }}: {{ $v | quote }}
-      {{- end }}
-      {{- end }}
+       max_age: {{ .configuration.max_age }}
+       allow_credentials: {{ .configuration.allow_credentials }}
+       allow_origin: {{ .configuration.allow_origin }}
+    {{- else if eq .name "headers" }}
+  - name: {{ .name }}   
+    configuration:
+    {{- if .configuration.custom_response }}
+       response:
+       {{- range .configuration.response }}
+       - header: {{ .header | quote }}
+         op: {{ .op | quote }}
+         value: {{ .value | quote }}
+         value_type: {{ .value_type | quote }}
+       {{- end }}
+         {{- else }}
+       response: {{ .configuration.response | quote }}
+       {{- end  }}
+    {{- else }}
+  - name: {{ .name }}
+    configuration:
+       {{- range $k, $v := .configuration }}
+       {{ $k }}: {{ $v }}
+       {{- end  }}
+    {{- end }}
+    version: {{ .version }}
+    enabled: {{ .enabled }}
 {{- end }}
 {{- end }}
