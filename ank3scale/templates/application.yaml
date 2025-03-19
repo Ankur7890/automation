@@ -1,0 +1,22 @@
+kind: Application
+apiVersion: capabilities.3scale.net/v1beta1
+metadata:
+  name: {{ .Values.product.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "insecure_skip_verify": "true"
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  accountCR:
+    name: {{ .Values.accountCR.name }}
+    {{- if .Values.plan.basicplan.enabled }}
+  applicationPlanName: basicplan
+  {{- else if .Values.plan.additionalservicesprod.enabled }}
+  applicationPlanName: additionalservicesprod
+  {{- else if .Values.plan.baseplan.enabled }}
+  applicationPlanName: baseplan
+  {{- end }}
+  description: {{ .Values.product.name | squote }}
+  name: {{ .Values.product.name }}
+  productCR:
+    name: {{ .Values.product.name }}
