@@ -9,7 +9,7 @@ metadata:
   name: amq-broker-prod-amqp-0-svc-rte
   namespace: amq-broker
 spec:
-  host: amq-broker-prod-amqp-0-svc-rte-amq-broker.apps.cluster-tq9x2.goindigo.in
+  host: amq-broker-prod-amqp-0-svc-rte-amq-broker.apps.cluster-tq9x2.ankur.in
   port:
     targetPort: amqp-0
   tls:
